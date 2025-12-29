@@ -1,10 +1,21 @@
-const { logRequest, logResponse } = require('../support/loggers');
+const { logRequest, logResponse, logResponseBody } = require('../support/loggers');
+const apiPaths = require('./apiPaths');
 
 // Lightweight wrapper around Playwright APIRequestContext (CommonJS exports)
 const post = async (context, path, data, options = {}) => {
   logRequest('POST', path, data, options);
   const response = await context.post(path, { data, ...options });
   await logResponse(response);
+
+  // For agent creation we always print the response body (force) to aid debugging
+  try {
+    if (path === apiPaths.agents) {
+      await logResponseBody(response, 'Agent create response', { force: true });
+    }
+  } catch (e) {
+    console.error('Error logging agent response body:', e);
+  }
+
   return response;
 };
 

@@ -35,7 +35,15 @@ function assertStatus(response, expectedStatus) {
   if (!response) throw new Error('Response is undefined');
   const actual = _getStatus(response);
   if (actual !== expectedStatus) {
-    throw new Error(`Expected status ${expectedStatus} but got ${actual}`);
+    // Try to include a short body excerpt to help debugging
+    let excerpt = '';
+    try {
+      const text = response._bodyText !== undefined ? response._bodyText : null;
+      if (text) excerpt = ` — body: ${text.toString().slice(0, 200)}${text.length > 200 ? '...' : ''}`;
+    } catch (e) {
+      /* ignore */
+    }
+    throw new Error(`Expected status ${expectedStatus} but got ${actual}${excerpt}`);
   }
 }
 

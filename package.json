@@ -7,6 +7,7 @@
     "cucumber": "cucumber-js --require-module @babel/register --require ./src/**/*.js --require ./steps/**/*.js --require ./features/steps/**/*.js --require ./features/steps/**/*.js --format progress --format json:reports/cucumber-report.json",
     "clean": "rm -rf reports",
     "report": "node scripts/generate-report.js",
+    "check:require": "node scripts/require-check.js",
     "lint": "eslint . --ext .js"
   },
   "dependencies": {

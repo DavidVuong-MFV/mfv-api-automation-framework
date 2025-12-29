@@ -26,6 +26,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Require syntax check
+        run: |
+          echo "Running require-check (syntax/load)"
+          npm run check:require
+
+      - name: Lint
+        run: |
+          echo "Running ESLint"
+          npm run lint || echo "ESLint errors (non-blocking in CI)"
+
       - name: Validate secrets (clear messages)
         env:
           API_BASE_QA: https://api.ai-agent.test.mfw.work
