@@ -76,3 +76,26 @@ jobs:
             reports/cucumber-report.json
             reports/cucumber-report.html
             playwright-report/**
+
+      - name: Notify Slack
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,workflow,job,ref
+          custom_payload: |
+            {
+              "attachments": [
+                {
+                  "color": "${{ job.status == 'success' && '#36a64f' || job.status == 'failure' && '#ff0000' || '#ffae42' }}",
+                  "title": "CI: ${{ matrix.env }} — ${{ job.status }}",
+                  "text": "Repository: ${{ github.repository }}\nWorkflow: ${{ github.workflow }}\nBranch: ${{ github.ref }}\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                  "fields": [
+                    {"title":"Environment","value":"${{ matrix.env }}","short":true},
+                    {"title":"Job","value":"${{ github.job }}","short":true}
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

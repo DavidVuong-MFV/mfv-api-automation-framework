@@ -53,3 +53,18 @@ npm test
 ```
 
 This ensures parity between local runs and CI behavior.
+
+## Slack notifications
+The CI workflow can post job results to Slack.
+
+- Create an Incoming Webhook in Slack and copy the webhook URL
+- Add the webhook URL to GitHub Secrets:
+  - `SLACK_WEBHOOK` — Incoming webhook URL
+
+```bash
+gh secret set SLACK_WEBHOOK --body "https://hooks.slack.com/services/XXX/YYY/ZZZ"
+```
+
+Notes:
+- The workflow posts a concise message for each matrix job including environment and a link to the run.
+- Prefer the bot-token option for better governance and rotation. If you want, I can help create the Slack App and test the integration (you must add the secret yourself in GitHub).
