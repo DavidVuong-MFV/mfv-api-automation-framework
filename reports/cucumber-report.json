@@ -1,0 +1,81 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "agent-api-feature;create-agent-by-identifier",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "Create agent by identifier",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 47916
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I prepare agent payload from \"addNewAgent.json\"",
+            "match": {
+              "location": "features/steps/agentApiSteps.js:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3873624
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 5,
+            "name": "I create an agent",
+            "match": {
+              "location": "features/steps/agentApiSteps.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 809279000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 6,
+            "name": "the response status is 201",
+            "match": {
+              "location": "features/steps/agentApiSteps.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 726292
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smokeTest",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "agent-api-feature",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Agent API Feature",
+    "tags": [
+      {
+        "name": "@smokeTest",
+        "line": 1
+      }
+    ],
+    "uri": "features/agent/agentApiFeature.feature"
+  }
+]

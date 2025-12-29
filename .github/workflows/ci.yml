@@ -1,0 +1,28 @@
+name: CI - API BDD Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [qa, stag]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install
+        run: npm ci
+
+      - name: Run tests
+        env:
+          NODE_ENV: ${{ matrix.env }}
+        #   API_BASE: ${{ secrets.API_BASE_${{ matrix.env | upper }} }}
+        #   API_USER: ${{ secrets.API_USER_${{ matrix.env | upper }} }}
+        #   API_PASS: ${{ secrets.API_PASS_${{ matrix.env | upper }} }}
+        run: npm test

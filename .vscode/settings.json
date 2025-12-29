@@ -1,0 +1,12 @@
+{
+  "cucumberautocomplete.steps": [
+    "${workspaceFolder}/**/steps/**/*.js",
+    "${workspaceFolder}/steps/**/*.js",
+    "${workspaceFolder}/src/**/*.js",
+    "${workspaceFolder}/support/**/*.js"
+  ],
+  "cucumberautocomplete.syncfeatures": "${workspaceFolder}/features/**/*.feature",
+  "cucumberautocomplete.strictGherkinCompletion": true,
+  "cucumberautocomplete.strictGherkinValidation": true,
+  "cucumberautocomplete.requireModule": ["@babel/register"]
+}
