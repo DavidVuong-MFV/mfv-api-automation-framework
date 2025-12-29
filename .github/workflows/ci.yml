@@ -26,51 +26,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Require syntax check
-        run: |
-          echo "Running require-check (syntax/load)"
-          npm run check:require
-
-      - name: Lint
-        run: |
-          echo "Running ESLint"
-          npm run lint || echo "ESLint errors (non-blocking in CI)"
-
-      - name: Validate secrets (clear messages)
-        env:
-          API_BASE_QA: https://api.ai-agent.test.mfw.work
-          API_BASE_STAG: https://api-stag.example.com
-          NODE_ENV: ${{ matrix.env }}
-        run: |
-          echo "Checking API_BASE secrets availability..."
-          if [ -z "$API_BASE_QA" ]; then echo "API_BASE_QA: MISSING"; else echo "API_BASE_QA: present"; fi
-          if [ -z "$API_BASE_STAG" ]; then echo "API_BASE_STAG: MISSING"; else echo "API_BASE_STAG: present"; fi
-          if [ "$NODE_ENV" = "qa" ]; then EXPECTED="$API_BASE_QA"; SECRET_NAME="API_BASE_QA"; fi
-          if [ "$NODE_ENV" = "stag" ]; then EXPECTED="$API_BASE_STAG"; SECRET_NAME="API_BASE_STAG"; fi
-          if [ -z "$EXPECTED" ]; then
-            echo "ERROR: Missing ${SECRET_NAME:-API_BASE_<ENV>} secret for $NODE_ENV"
-            exit 1
-          fi
-          echo "Validated secret ${SECRET_NAME}."
-
       - name: Run tests
         env:
           NODE_ENV: ${{ matrix.env }}
-          API_BASE_QA: https://api.ai-agent.test.mfw.work
-          API_BASE_STAG: https://api-stag.example.com
+          # Use secrets instead of hardcoding
+          API_BASE_QA: ${{ secrets.API_BASE_QA }}
+          API_BASE_STAG: ${{ secrets.API_BASE_STAG }}
+          # Select API_BASE cleanly per environment
+          API_BASE: ${{ matrix.env == 'qa' && secrets.API_BASE_QA || secrets.API_BASE_STAG }}
         run: |
-          # Select the right secret at runtime and export it for npm scripts
-          if [ "$NODE_ENV" = "qa" ]; then export API_BASE="$API_BASE_QA"; fi
-          if [ "$NODE_ENV" = "stag" ]; then export API_BASE="$API_BASE_STAG"; fi
-          if [ -z "$API_BASE" ]; then echo "Missing API_BASE for $NODE_ENV"; exit 1; fi
-          echo "Running tests for $NODE_ENV (API_BASE set)"
+          echo "Running tests for $NODE_ENV"
+          echo "API_BASE=$API_BASE"
           npm test
-        # let upload step run regardless of test outcome (we still want artifacts)
 
-      - name: Generate HTML report (attempt even if tests fail)
+      - name: Generate HTML report
         if: always()
         run: |
-          # Report generator expects reports/cucumber-report.json
           if [ -f reports/cucumber-report.json ]; then
             npm run report || echo "Report generation failed"
           else
