@@ -23,3 +23,33 @@
    # Generate HTML report
    npm run report
    ```
+
+## CI secrets & GitHub Actions 🔐
+
+The GitHub Actions CI requires repository **Secrets** for the target API base URLs. These secrets are referenced by the workflow matrix and must be set in **Settings → Secrets → Actions**:
+
+- `API_BASE_QA` — Base URL for the QA environment
+- `API_BASE_STAG` — Base URL for the Staging environment
+
+How it works:
+- The CI matrix sets `NODE_ENV` to `qa` or `stag` and picks the corresponding secret `API_BASE_<ENV>` at runtime.
+- The workflow will fail early with a clear message if the expected secret is not configured.
+
+Set secrets from the CLI (GitHub CLI example):
+
+```bash
+# macOS / Linux - requires gh CLI authenticated
+gh secret set API_BASE_QA --body "https://api-qa.example.com"
+gh secret set API_BASE_STAG --body "https://api-stag.example.com"
+```
+
+Local testing tips:
+- You can set `NODE_ENV` and `API_BASE` locally to target a specific environment:
+
+```bash
+export NODE_ENV=qa
+export API_BASE=https://api-qa.example.com
+npm test
+```
+
+This ensures parity between local runs and CI behavior.

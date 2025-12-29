@@ -19,10 +19,29 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Validate required secrets
+        env:
+          API_BASE_QA: ${{ secrets.API_BASE_QA }}
+          API_BASE_STAG: ${{ secrets.API_BASE_STAG }}
+          NODE_ENV: ${{ matrix.env }}
+        run: |
+          echo "Checking API_BASE secrets availability..."
+          if [ -z "$API_BASE_QA" ]; then echo "API_BASE_QA: MISSING"; else echo "API_BASE_QA: present"; fi
+          if [ -z "$API_BASE_STAG" ]; then echo "API_BASE_STAG: MISSING"; else echo "API_BASE_STAG: present"; fi
+          if [ "$NODE_ENV" = "qa" ]; then EXPECTED="$API_BASE_QA"; SECRET_NAME="API_BASE_QA"; fi
+          if [ "$NODE_ENV" = "stag" ]; then EXPECTED="$API_BASE_STAG"; SECRET_NAME="API_BASE_STAG"; fi
+          if [ -z "$EXPECTED" ]; then
+            echo "ERROR: Missing ${SECRET_NAME:-API_BASE_<ENV>} secret for $NODE_ENV"
+            exit 1
+          fi
+
       - name: Run tests
         env:
           NODE_ENV: ${{ matrix.env }}
-        #   API_BASE: ${{ secrets.API_BASE_${{ matrix.env | upper }} }}
-        #   API_USER: ${{ secrets.API_USER_${{ matrix.env | upper }} }}
-        #   API_PASS: ${{ secrets.API_PASS_${{ matrix.env | upper }} }}
-        run: npm test
+          API_BASE_QA: ${{ secrets.API_BASE_QA }}
+          API_BASE_STAG: ${{ secrets.API_BASE_STAG }}
+        run: |
+          if [ "$NODE_ENV" = "qa" ]; then export API_BASE="$API_BASE_QA"; fi
+          if [ "$NODE_ENV" = "stag" ]; then export API_BASE="$API_BASE_STAG"; fi
+          if [ -z "$API_BASE" ]; then echo "Missing API_BASE secret for $NODE_ENV"; exit 1; fi
+          npm test
