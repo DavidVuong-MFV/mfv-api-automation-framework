@@ -14,7 +14,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 50333
+              "duration": 57249
             }
           },
           {
@@ -27,7 +27,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5659334
+              "duration": 3907958
             }
           },
           {
@@ -39,9 +39,8 @@
               "location": "features/steps/agentApiSteps.js:22"
             },
             "result": {
-              "status": "failed",
-              "duration": 1103182499,
-              "error_message": "apiRequestContext.post: getaddrinfo ENOTFOUND api-stag.example.com\nCall log:\n\u001b[2m  - → POST https://api-stag.example.com/admin/api/v1/agents\u001b[22m\n\u001b[2m    - user-agent: CI-TestRunner\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\u001b[2m    - Authorization: Bearer undefined\u001b[22m\n\u001b[2m    - Content-Type: application/json\u001b[22m\n\u001b[2m    - Cookie:\u001b[22m\n\u001b[2m    - content-length: 52\u001b[22m\n\n    at Object.post (/Users/cap.duy.vuong/Documents/Testing/Automation/Framework/mfv-api-automation-framework/src/apiClient.js:7:34)\n    at World.<anonymous> (/Users/cap.duy.vuong/Documents/Testing/Automation/Framework/mfv-api-automation-framework/features/steps/agentApiSteps.js:26:35)"
+              "status": "passed",
+              "duration": 627671708
             }
           },
           {
@@ -53,8 +52,8 @@
               "location": "features/steps/agentApiSteps.js:34"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 618124
             }
           },
           {
@@ -66,8 +65,8 @@
               "location": "features/steps/agentApiSteps.js:38"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 484165
             }
           }
         ],

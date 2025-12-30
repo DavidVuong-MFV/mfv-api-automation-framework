@@ -35,15 +35,21 @@ function assertStatus(response, expectedStatus) {
   if (!response) throw new Error('Response is undefined');
   const actual = _getStatus(response);
   if (actual !== expectedStatus) {
-    // Try to include a short body excerpt to help debugging
-    let excerpt = '';
+    let bodyText = '';
     try {
-      const text = response._bodyText !== undefined ? response._bodyText : null;
-      if (text) excerpt = ` — body: ${text.toString().slice(0, 200)}${text.length > 200 ? '...' : ''}`;
-    } catch (e) {
-      /* ignore */
+      // Try to extract body text 
+      if (response._bodyText !== undefined && response._bodyText !== null) { 
+        bodyText = response._bodyText.toString(); 
+      } 
+      else 
+        if (typeof response.text === 'function') { 
+          bodyText = response.text(); // if response has a text() method 
+      } 
+    } 
+    catch (e) { 
+      bodyText = '[Unable to read response body]'; 
     }
-    throw new Error(`Expected status ${expectedStatus} but got ${actual}\n--- Response body ---\n${bodyText}`);
+    throw new Error( `Expected status ${expectedStatus} but got ${actual}\n--- Response body ---\n${bodyText}` );
   }
 }
 
