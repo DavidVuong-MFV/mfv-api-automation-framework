@@ -26,15 +26,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
+      - name: set API_BASE dynamically
         env:
           NODE_ENV: ${{ matrix.env }}
           # Use secrets instead of hardcoding
           API_BASE_QA: ${{ secrets.API_BASE_QA }}
           API_BASE_STAG: ${{ secrets.API_BASE_STAG }}
-          # Select API_BASE cleanly per environment
-          API_BASE: ${{ matrix.env == 'qa' && secrets.API_BASE_QA || secrets.API_BASE_STAG }}
-          API_TOKEN: ${{ secrets.API_TOKEN }}
+        run: | 
+          if [ "$NODE_ENV" = "qa" ]; 
+          then echo "API_BASE=$API_BASE_QA" >> $GITHUB_ENV; fi 
+          if [ "$NODE_ENV" = "stag" ]; 
+          then echo "API_BASE=$API_BASE_STAG" >> $GITHUB_ENV; fi
+          
+      - name: Run tests
+        env:
+          NODE_ENV: ${{ matrix.env }}
+          API_TOKEN: ${{secrets.API_TOKEN}}
         run: |
           echo "Running tests for $NODE_ENV"
           echo "API_BASE=$API_BASE"
@@ -58,6 +65,7 @@ jobs:
             reports/cucumber-report.json
             reports/cucumber-report.html
             playwright-report/**
+
 
       - name: Notify Slack
         if: always()
