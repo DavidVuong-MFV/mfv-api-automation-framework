@@ -1,0 +1,129 @@
+name: API Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to test'
+        required: true
+        default: 'qa'
+        type: choice
+        options:
+          - qa
+          - staging
+          - production
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        environment: [qa, staging]
+      fail-fast: false
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests - ${{ matrix.environment }}
+        env:
+          NODE_ENV: ${{ matrix.environment }}
+          URL_BASE: ${{ matrix.environment == 'qa' && secrets.URL_BASE_QA || secrets.URL_BASE_STAG }}
+          URL_BASE_QA: ${{ secrets.URL_BASE_QA }}
+          URL_BASE_STAG: ${{ secrets.URL_BASE_STAG }}
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          TIMEOUT: '60000'
+        run: |
+          echo "Running tests for ${{ matrix.environment }} environment"
+          npm run test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.environment }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
+
+      - name: Generate test report
+        if: always()
+        run: npm run report
+
+      - name: Notify Slack
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,workflow,job,ref
+          custom_payload: |
+            {
+              "attachments": [
+                {
+                  "color": "${{ job.status == 'success' && '#36a64f' || job.status == 'failure' && '#ff0000' || '#ffae42' }}",
+                  "title": "CI: ${{ matrix.environment }} — ${{ job.status }}",
+                  "text": "Repository: ${{ github.repository }}\nWorkflow: ${{ github.workflow }}\nBranch: ${{ github.ref }}\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                  "fields": [
+                    {"title":"Environment","value":"${{ matrix.environment }}","short":true},
+                    {"title":"Job","value":"${{ github.job }}","short":true}
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  # Manual environment-specific test run
+  test-manual:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests - ${{ inputs.environment }}
+        env:
+          NODE_ENV: ${{ inputs.environment }}
+          URL_BASE: ${{ inputs.environment == 'qa' && secrets.URL_BASE_QA || (inputs.environment == 'staging' && secrets.URL_BASE_STAG || secrets.URL_BASE_PROD) }}
+          URL_BASE_QA: ${{ secrets.URL_BASE_QA }}
+          URL_BASE_STAG: ${{ secrets.URL_BASE_STAG }}
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          TIMEOUT: '60000'
+        run: npm run test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-manual-${{ inputs.environment }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
