@@ -14,7 +14,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 53167
+              "duration": 50333
             }
           },
           {
@@ -27,7 +27,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4649541
+              "duration": 5659334
             }
           },
           {
@@ -39,8 +39,9 @@
               "location": "features/steps/agentApiSteps.js:22"
             },
             "result": {
-              "status": "passed",
-              "duration": 1286167791
+              "status": "failed",
+              "duration": 1103182499,
+              "error_message": "apiRequestContext.post: getaddrinfo ENOTFOUND api-stag.example.com\nCall log:\n\u001b[2m  - → POST https://api-stag.example.com/admin/api/v1/agents\u001b[22m\n\u001b[2m    - user-agent: CI-TestRunner\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n\u001b[2m    - Authorization: Bearer undefined\u001b[22m\n\u001b[2m    - Content-Type: application/json\u001b[22m\n\u001b[2m    - Cookie:\u001b[22m\n\u001b[2m    - content-length: 52\u001b[22m\n\n    at Object.post (/Users/cap.duy.vuong/Documents/Testing/Automation/Framework/mfv-api-automation-framework/src/apiClient.js:7:34)\n    at World.<anonymous> (/Users/cap.duy.vuong/Documents/Testing/Automation/Framework/mfv-api-automation-framework/features/steps/agentApiSteps.js:26:35)"
             }
           },
           {
@@ -52,8 +53,8 @@
               "location": "features/steps/agentApiSteps.js:34"
             },
             "result": {
-              "status": "passed",
-              "duration": 1687500
+              "status": "skipped",
+              "duration": 0
             }
           },
           {
@@ -65,8 +66,8 @@
               "location": "features/steps/agentApiSteps.js:38"
             },
             "result": {
-              "status": "passed",
-              "duration": 1512999
+              "status": "skipped",
+              "duration": 0
             }
           }
         ],

@@ -39,6 +39,20 @@ jobs:
           if [ "$NODE_ENV" = "stag" ]; 
           then echo "URL_BASE=$URL_BASE_STAG" >> $GITHUB_ENV; fi
 
+      - name: Debug - Check if API_TOKEN is set
+        run: |
+          if [ -z "$API_TOKEN" ]; then
+            echo "❌ API_TOKEN is NOT set"
+            echo "Secret is missing or not mapped to environment"
+          else
+            echo "✅ API_TOKEN is set"
+            echo "Length: ${#API_TOKEN}"
+            echo "First 10 chars: ${API_TOKEN:0:10}"
+            echo "Last 4 chars: ${API_TOKEN: -4}"
+          fi
+        env:
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+          
       - name: Run tests
         env:
           NODE_ENV: ${{ matrix.env }}
