@@ -34,6 +34,7 @@ jobs:
           API_BASE_STAG: ${{ secrets.API_BASE_STAG }}
           # Select API_BASE cleanly per environment
           API_BASE: ${{ matrix.env == 'qa' && secrets.API_BASE_QA || secrets.API_BASE_STAG }}
+          API_TOKEN: ${{ secrets.API_TOKEN }}
         run: |
           echo "Running tests for $NODE_ENV"
           echo "API_BASE=$API_BASE"
