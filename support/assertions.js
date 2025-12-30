@@ -43,7 +43,7 @@ function assertStatus(response, expectedStatus) {
     } catch (e) {
       /* ignore */
     }
-    throw new Error(`Expected status ${expectedStatus} but got ${actual}${excerpt}`);
+    throw new Error(`Expected status ${expectedStatus} but got ${actual}\n--- Response body ---\n${bodyText}`);
   }
 }
 
