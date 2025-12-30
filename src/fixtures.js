@@ -10,6 +10,8 @@ BeforeAll(async () => {
     baseURL: config.urlBase,
     timeout: config.timeout,
     extraHTTPHeaders: {
+      'Authorization': `Bearer ${process.env.API_TOKEN}`, 
+      'User-Agent': 'CI-TestRunner',
       'Content-Type': 'application/json',
       'Cookie': config.cookie || ''
     }
