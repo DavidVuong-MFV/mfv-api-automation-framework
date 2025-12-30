@@ -11,7 +11,7 @@ dotenv.config({ path: envFile });
 
 const config = {
   env: envName,
-  apiBase: process.env.API_BASE,
+  urlBase: process.env.URL_BASE,
   timeout: Number(process.env.TIMEOUT_MS || 30000),
   dataDir: path.resolve(process.cwd(), 'data', envName),
   // Optional cookie header value to include in API requests

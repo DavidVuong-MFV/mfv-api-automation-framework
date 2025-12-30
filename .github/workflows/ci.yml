@@ -26,25 +26,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: set API_BASE dynamically
+      - name: set URL_BASE dynamically
         env:
           NODE_ENV: ${{ matrix.env }}
           # Use secrets instead of hardcoding
-          API_BASE_QA: ${{ secrets.API_BASE_QA }}
-          API_BASE_STAG: ${{ secrets.API_BASE_STAG }}
+          URL_BASE_QA: ${{ secrets.URL_BASE_QA }}
+          URL_BASE_STAG: ${{ secrets.URL_BASE_STAG }}
         run: | 
           if [ "$NODE_ENV" = "qa" ]; 
-          then echo "API_BASE=$API_BASE_QA" >> $GITHUB_ENV; fi 
+          then echo "URL_BASE=$URL_BASE_QA" >> $GITHUB_ENV; fi 
           if [ "$NODE_ENV" = "stag" ]; 
-          then echo "API_BASE=$API_BASE_STAG" >> $GITHUB_ENV; fi
-          
+          then echo "URL_BASE=$URL_BASE_STAG" >> $GITHUB_ENV; fi
+
       - name: Run tests
         env:
           NODE_ENV: ${{ matrix.env }}
           API_TOKEN: ${{secrets.API_TOKEN}}
         run: |
           echo "Running tests for $NODE_ENV"
-          echo "API_BASE=$API_BASE"
+          echo "URL_BASE=$URL_BASE"
           npm test
 
       - name: Generate HTML report

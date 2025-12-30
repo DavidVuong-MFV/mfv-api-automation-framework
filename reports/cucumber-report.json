@@ -14,7 +14,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 53499
+              "duration": 49541
             }
           },
           {
@@ -27,7 +27,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4580249
+              "duration": 3983958
             }
           },
           {
@@ -40,7 +40,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1291349083
+              "duration": 604946209
             }
           },
           {
@@ -53,7 +53,20 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1259667
+              "duration": 1610290
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "the response body contains the agent identifier and uuid",
+            "match": {
+              "location": "features/steps/agentApiSteps.js:38"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1173708
             }
           }
         ],

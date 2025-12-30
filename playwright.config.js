@@ -16,7 +16,7 @@ const makeHeaders = () => {
 
 module.exports = {
   use: {
-    baseURL: config.apiBase,
+    baseURL: config.urlBase,
     extraHTTPHeaders: makeHeaders(),
     timeout: config.timeout
   }

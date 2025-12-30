@@ -7,7 +7,7 @@ let apiContext;
 
 BeforeAll(async () => {
   apiContext = await request.newContext({
-    baseURL: config.apiBase,
+    baseURL: config.urlBase,
     timeout: config.timeout,
     extraHTTPHeaders: {
       'Content-Type': 'application/json',
