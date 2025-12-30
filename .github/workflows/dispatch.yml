@@ -45,7 +45,6 @@ jobs:
           URL_BASE: ${{ matrix.environment == 'qa' && secrets.URL_BASE_QA || secrets.URL_BASE_STAG }}
           URL_BASE_QA: ${{ secrets.URL_BASE_QA }}
           URL_BASE_STAG: ${{ secrets.URL_BASE_STAG }}
-          API_TOKEN: ${{ secrets.API_TOKEN }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           TIMEOUT: '60000'
         run: |
@@ -113,7 +112,6 @@ jobs:
           URL_BASE: ${{ inputs.environment == 'qa' && secrets.URL_BASE_QA || (inputs.environment == 'staging' && secrets.URL_BASE_STAG || secrets.URL_BASE_PROD) }}
           URL_BASE_QA: ${{ secrets.URL_BASE_QA }}
           URL_BASE_STAG: ${{ secrets.URL_BASE_STAG }}
-          API_TOKEN: ${{ secrets.API_TOKEN }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           TIMEOUT: '60000'
         run: npm run test
