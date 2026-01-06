@@ -1,8 +1,8 @@
 const { Given, When,Then } = require('@cucumber/cucumber');
-const apiClient = require('../../src/apiClient');
-const apiPaths = require('../../src/apiPaths');
-const { loadJson } = require('../../support/dataLoader');
-const { assertStatus, assertIdentifierAndUuid } = require('../../support/assertions');
+const apiClient = require('../../../src/APIs/apiClient');
+const apiPaths = require('../../../src/APIs/apiPaths');
+const { loadJson } = require('../../../support/dataLoader');
+const { assertStatus, assertIdentifierAndUuid, assertResponseBodyContainErrorMessage } = require('../../../support/assertions');
 
 Given('I prepare agent payload from {string}', function(fileName) { 
     // loadJson automatically resolves env folder (qa, stag, prod) 
@@ -37,4 +37,8 @@ Then('the response status is {int}', function (expectedStatus) {
 
 Then('the response body contains the agent identifier and uuid', async function() {
   return assertIdentifierAndUuid(this.response, this.payload && this.payload.identifier);
-}); 
+});
+
+Then('the response body contains error message {string}', async function(expectedMessage) {
+  return assertResponseBodyContainErrorMessage(this.response, expectedMessage);
+});

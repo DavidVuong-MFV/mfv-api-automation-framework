@@ -1,7 +1,7 @@
 const { BeforeAll, Before } = require('@cucumber/cucumber');
 const { request } = require('@playwright/test');
-const config = require('../config/config');
-const { loadJson } = require('../support/dataLoader');
+const config = require('../../config/config');
+const { loadJson } = require('../../support/dataLoader');
 
 let apiContext;
 
@@ -10,8 +10,6 @@ BeforeAll(async () => {
     baseURL: config.urlBase,
     timeout: config.timeout,
     extraHTTPHeaders: {
-      'Authorization': `Bearer ${process.env.API_TOKEN}`, 
-      'User-Agent': 'CI-TestRunner',
       'Content-Type': 'application/json',
       'Cookie': config.cookie || ''
     }

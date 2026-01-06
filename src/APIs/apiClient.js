@@ -1,4 +1,4 @@
-const { logRequest, logResponse, logResponseBody } = require('../support/loggers');
+const { logRequest, logResponse, logResponseBody } = require('../../support/loggers');
 const apiPaths = require('./apiPaths');
 
 // Lightweight wrapper around Playwright APIRequestContext (CommonJS exports)

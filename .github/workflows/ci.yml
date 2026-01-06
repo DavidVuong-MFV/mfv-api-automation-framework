@@ -1,4 +1,4 @@
-name: CI - API BDD Tests
+name: CI - API Integration and E2E Functional BDD Tests
 
 on: [push, pull_request]
 

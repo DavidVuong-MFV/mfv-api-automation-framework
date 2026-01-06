@@ -4,17 +4,17 @@
     "elements": [
       {
         "description": "",
-        "id": "agent-api-feature;create-agent-by-identifier",
+        "id": "agent-api-feature;create-success-agent-by-identifier",
         "keyword": "Scenario",
         "line": 3,
-        "name": "Create agent by identifier",
+        "name": "Create success agent by identifier",
         "steps": [
           {
             "keyword": "Before",
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 43333
+              "duration": 57416
             }
           },
           {
@@ -23,11 +23,11 @@
             "line": 4,
             "name": "I prepare agent payload from \"addNewAgent.json\"",
             "match": {
-              "location": "features/steps/agentApiSteps.js:7"
+              "location": "features/steps/APIsSteps/agentApiSteps.js:7"
             },
             "result": {
               "status": "passed",
-              "duration": 4093208
+              "duration": 4041916
             }
           },
           {
@@ -36,11 +36,11 @@
             "line": 5,
             "name": "I create an agent",
             "match": {
-              "location": "features/steps/agentApiSteps.js:22"
+              "location": "features/steps/APIsSteps/agentApiSteps.js:22"
             },
             "result": {
               "status": "passed",
-              "duration": 510169083
+              "duration": 620928250
             }
           },
           {
@@ -49,11 +49,11 @@
             "line": 6,
             "name": "the response status is 201",
             "match": {
-              "location": "features/steps/agentApiSteps.js:34"
+              "location": "features/steps/APIsSteps/agentApiSteps.js:34"
             },
             "result": {
               "status": "passed",
-              "duration": 1419624
+              "duration": 709458
             }
           },
           {
@@ -62,11 +62,11 @@
             "line": 7,
             "name": "the response body contains the agent identifier and uuid",
             "match": {
-              "location": "features/steps/agentApiSteps.js:38"
+              "location": "features/steps/APIsSteps/agentApiSteps.js:38"
             },
             "result": {
               "status": "passed",
-              "duration": 1166582
+              "duration": 652958
             }
           }
         ],
@@ -89,6 +89,6 @@
         "line": 1
       }
     ],
-    "uri": "features/agent/agentApiFeature.feature"
+    "uri": "features/APIs/agent/agentApiFeature.feature"
   }
 ]

@@ -53,6 +53,15 @@ function assertStatus(response, expectedStatus) {
   }
 }
 
+async function assertResponseBodyContainErrorMessage(response, expectedMessage) {
+  const body = await _parseJsonBody(response);
+  if (!('message' in body)) {
+    throw new Error('Response body missing `message` field');
+  }
+  if (body.message !== expectedMessage) {
+    throw new Error(`Expected error message "${expectedMessage}" but got "${body.message}"`);
+  }
+}
 async function assertIdentifierAndUuid(response, expectedIdentifier) {
   const body = await _parseJsonBody(response);
 
@@ -66,14 +75,7 @@ async function assertIdentifierAndUuid(response, expectedIdentifier) {
   if (!uuidRegex.test(body.uuid)) throw new Error(`Invalid uuid format: ${body.uuid}`);
 }
 
-async function assertAgentCreated(response, payload) {
-  // convenience: assert status and body
-  assertStatus(response, 201);
-  await assertIdentifierAndUuid(response, payload && payload.identifier);
-}
-
 module.exports = {
   assertStatus,
   assertIdentifierAndUuid,
-  assertAgentCreated,
-};
+  assertResponseBodyContainErrorMessage,};

@@ -1,7 +1,9 @@
 module.exports = {
   default: {
-    require: ['src/**/*.js', 'steps/**/*.js', 'features/steps/**/*.js'],
+    requireModule: ['@babel/register'],
+    require: ['src/**/*.js', 'features/steps/**/*.js'],
     format: ['progress', 'json:reports/cucumber-report.json'],
+    paths: ['features/**/*.feature'],
     parallel: 1
   }
 };
